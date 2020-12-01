@@ -1,6 +1,6 @@
 # -*- mode: CMAKE; -*-
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.12)
 
 project(linenoise)
 
@@ -13,7 +13,7 @@ endif()
 message(STATUS "Build mode: ${CMAKE_BUILD_TYPE}")
 
 # INFO
-set(LINENOISE_VERSION "1.0.0" CACHE path "Linenoise version")
+set(LINENOISE_VERSION "1.0.0" CACHE STRING "Linenoise version")
 set(LINENOISE_DISPLAY_NAME "Linenoise-NG")
 set(LINENOISE_URL_INFO_ABOUT "https://github.com/arangodb/linenoise-ng")
 set(LINENOISE_CONTACT "hackers@arangodb.org")
@@ -22,7 +22,7 @@ set(LINENOISE_FRIENDLY_STRING "Linenoise NG - Linenoise Next Generation")
 # compiler options
 if(CMAKE_COMPILER_IS_GNUCXX)
   message(STATUS "Compiler type GNU: ${CMAKE_CXX_COMPILER}")
-  set(BASE_COMPILER_OPTIONS "-std=c++11 -Wall -Wextra")
+  set(BASE_COMPILER_OPTIONS "-std=c++11 -Wall -Wextra -Wno-implicit-fallthrough")
   set(CMAKE_CXX_FLAGS                "${CMAKE_CXX_FLAGS} ${BASE_COMPILER_OPTIONS}")
   set(CMAKE_CXX_FLAGS_DEBUG          "${CMAKE_CXX_FLAGS_DEBUG} ${BASE_COMPILER_OPTIONS} -O0 -g")
   set(CMAKE_CXX_FLAGS_MINSIZEREL     "${CMAKE_CXX_FLAGS_MINSIZEREL} ${BASE_COMPILER_OPTIONS} -Os")
@@ -32,7 +32,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 elseif(CMAKE_COMPILER_IS_CLANGCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   # using regular Clang or AppleClang
   message(STATUS "Compiler type CLANG: ${CMAKE_CXX_COMPILER}")
-  set(BASE_COMPILER_OPTIONS "-std=c++11 -Wall -Wextra")
+  set(BASE_COMPILER_OPTIONS "-std=c++11 -Wall -Wextra -Wno-implicit-fallthrough")
   set(CMAKE_CXX_FLAGS                "${CMAKE_CXX_FLAGS} ${BASE_COMPILER_OPTIONS}")
   set(CMAKE_CXX_FLAGS_DEBUG          "${CMAKE_CXX_FLAGS_DEBUG} ${BASE_COMPILER_OPTIONS} -O0 -g")
   set(CMAKE_CXX_FLAGS_MINSIZEREL     "${CMAKE_CXX_FLAGS_MINSIZEREL} ${BASE_COMPILER_OPTIONS} -Os")
@@ -50,9 +50,9 @@ elseif(MSVC)
            CMAKE_CXX_FLAGS_MINSIZEREL
            CMAKE_CXX_FLAGS_RELWITHDEBINFO)
     if (flag_var MATCHES "DEBUG")
-      set(${flag_var} "${${flag_var}} /MTd")
+      set(${flag_var} "${${flag_var}}")
     else ()
-      set(${flag_var} "${${flag_var}} /MT")
+      set(${flag_var} "${${flag_var}}")
     endif ()
   endforeach()
   # https://msdn.microsoft.com/en-us/library/aa267384%28VS.60%29.aspx
